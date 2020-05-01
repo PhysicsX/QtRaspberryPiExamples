@@ -11,7 +11,7 @@ Window {
     height: 480
     title: qsTr("Speedometer")
     color: "#000000"
-
+    visibility:  "FullScreen"
     Speedometer
     {
         objectName: "speedoMeter"
