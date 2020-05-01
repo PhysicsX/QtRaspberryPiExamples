@@ -30,3 +30,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     speedometer.h
+
+INCLUDEPATH += $$PWD
+
+CONFIG += unversioned_libname unversioned_soname
+
+unix:!macx: LIBS += -L$$PWD/./ -lwiringPi
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
