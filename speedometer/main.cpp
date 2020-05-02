@@ -24,18 +24,18 @@ int main(int argc, char *argv[])
     Speedometer *ptrSpeedometer = qobject_cast<Speedometer*>(speedometer);
     //Speedometer *ptrSpeedometer = dynamic_cast<Speedometer*>(speedometer);
 
-    qreal val = 110;
-    ptrSpeedometer->setSpeed(val);
+    qreal val = 0;
+    //ptrSpeedometer->setSpeed(val);
 
     //bool direction = true;
     QTimer timer;
 
-
+    // analog value from ltc2400
     float volt = 0;
 
     QObject::connect(&timer, &QTimer::timeout, [&]()
     {
-        ptrSpeedometer->setSpeed(val);
+
 
        // val = volt;
 
@@ -46,14 +46,14 @@ int main(int argc, char *argv[])
         else if(val > 3200)
                 ptrSpeedometer->setOuterColor(QColor(255,0,0));
 
-        if(abs(volt-val) <=100)
+        if(abs(volt-val) <=10)
             val = volt;
         else if(volt > val)
-            val = val + 100;
+            val = val + 10;
         else if( volt < val)
-            val = val - 100;
+            val = val - 10;
 
-
+        ptrSpeedometer->setSpeed(val);
 //        if(val >= 4000)
 //            direction = false;
 //        else if(val <= 0.1)
@@ -71,8 +71,10 @@ int main(int argc, char *argv[])
     unsigned char buffer[100];
     wiringPiSPISetup(CHANNEL, 1000000);
 
+    long int ltw = 0;
+
     QTimer timer2;
-     long int ltw = 0;
+
     QObject::connect(&timer2,&QTimer::timeout, [&]()
     {
 
@@ -101,10 +103,9 @@ int main(int argc, char *argv[])
    // usleep(180000);
 
 
-
-
     timer2.start(180);
-    timer.start(10);
+    //TODO: pretend first timer to update the data before start the seond timer
+    timer.start(1);
 
     if (engine.rootObjects().isEmpty())
         return -1;
